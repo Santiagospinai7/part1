@@ -1,31 +1,51 @@
 function App() {
-  const friends = [
-    { name: 'Peter', age: 4 },
-    { name: 'Maya', age: 10 },
-  ];
+  const course = {
+    name: 'Half Stack appplication development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
 
   return (
-    <>
-      <h1>Greetings</h1>
-      <Hello name={friends[0].name} age={friends[0].age} />
-      <Hello name={friends[1].name} age={friends[1].age} />
-      <Footer />
-    </>
+    <div>
+      <Header course={course.name}/>
+      <Content parts={course.parts}/>
+      <Total parts={course.parts}/>
+    </div>
   );
 }
 
-const Hello = (props) => {
+const Header = (props) => {
+  console.log(props);
   return (
     <div>
-      <p>Hello {props.name} you're {props.age}</p>
+      <h1>{props.course}</h1>
     </div>
   )
 }
 
-const Footer = () => {
+const Content = (props) => {
   return (
     <div>
-      Greetings app created by <a href="https://github.com/Santiagospinai7">Santiagospinai7</a>
+      <p></p>
+    </div>
+  )
+}
+
+const Total = (props) => {
+  return (
+    <div>
     </div>
   )
 }
