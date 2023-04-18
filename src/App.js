@@ -21,8 +21,6 @@ function App({ courseData }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("New topic: ", newTopic);
-
     if (newTopic.length === 0 || newTopic.name === "" || newTopic.exercises === 0 || newTopic.exercises === undefined) {
       console.log("No new topic");
       return;
@@ -34,7 +32,7 @@ function App({ courseData }) {
       }
       
       updateCourse({...course, parts: [...course.parts, createNewTopic]});
-      setNewTopic({name: "", exercises: 0});
+      setNewTopic({name: "", exercises: ""});
     }
   }
 
