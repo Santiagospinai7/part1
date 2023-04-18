@@ -39,11 +39,6 @@ function App({ courseData }) {
   }
 
   const handleChange = (e) => {
-    // if(e.target.value !== undefined) {
-    //   (e.target.id === 'name') ? setNewTopic({...newTopic,name: e.target.value}) : setNewTopic({...newTopic,exercises: parseInt(e.target.value, 10)}); 
-    // } else {
-    //   console.log("No value");
-    // }
     if (e.target.value !== undefined) {
       if (e.target.id === 'name') {
         setNewTopic({...newTopic, name: e.target.value})
