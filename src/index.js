@@ -4,7 +4,7 @@ import App from './App';
 
 // Data
 const COURSE = {
-  name: 'Half Stack appplication development',
+  name: 'Web Development course',
   parts: [
       {
       id: 1,
