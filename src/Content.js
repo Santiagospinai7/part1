@@ -1,14 +1,16 @@
 import React from "react"
 import Part from "./Part"
 
-function Content(props) {
+function Content( {parts} ) {
   return (
     <div>
+      <ol>
       {
-        props.parts.map(part => {
+        parts.map(part => {
           return <Part key={part.id} part={part}/>
         }
       )}
+      </ol>
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import React from "react";
 
-function Part(props) {
+function Part( {part} ) {
   return (
     <div>
-      <p>{`${props.part.name} has ${props.part.exercises} exercises`}</p>
+      <li>{`${part.name} has ${part.exercises} exercises`}</li>
     </div>
   );
 }
