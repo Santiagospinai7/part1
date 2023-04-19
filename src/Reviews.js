@@ -6,9 +6,11 @@ function Reviews({ reviews, isLoading }) {
     <div>
       <h1>Reviews: </h1>
       {isLoading ? <p>Loading...</p> : null}
+      <ol>
       {reviews.map((review) => (
         <Review key={review.id} review={review} />
       ))}
+      </ol>
     </div>
   );
 }

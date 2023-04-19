@@ -7,6 +7,9 @@ import Total from './Total';
 import Reviews from './Reviews';
 import { type } from '@testing-library/user-event/dist/type';
 
+import { createReview } from './services/reviews/createReview';
+import  { getAllReviews } from './services/reviews/getAllReviews';
+
 function App({ courseData }) {
   const calculateExerciseTotal = () => course.parts.reduce((counter, part) => counter + part.exercises, 0)
 
@@ -14,8 +17,10 @@ function App({ courseData }) {
   const [course, updateCourse] = useState(courseData);
   const [newTopic, setNewTopic] = useState({name: "", exercises: ""});
   const [exerciseTotal, setExerciseTotal] = useState(calculateExerciseTotal);
+
   const [reviews, updateReviews] = useState([]);
   const [newReview, setNewReview] = useState({title: "", description: ""});
+  
   const [isLoading, setLoading] = useState(true);
 
   // Fetch data
@@ -23,13 +28,10 @@ function App({ courseData }) {
     setLoading(true);
     
     setTimeout(() => {
-      axios.get("https://jsonplaceholder.typicode.com/posts")
-        .then(response => {
-          // recover data from response
-          const { data } = response;
-          updateReviews(data);
-          setLoading(false);
-        })
+      getAllReviews().then(reviews => {
+        updateReviews(reviews);
+        setLoading(false);
+      })
     }, 1000);
   }, []);
 
@@ -66,13 +68,16 @@ function App({ courseData }) {
     } else {
       const createNewReview = {
         user_id: 1,
-        id: reviews.length + 1,
         title: newReview.title,
         body: newReview.description
       }
+
+      createReview(createNewReview)
+        .then(review => {
+          updateReviews([...reviews, review]);
+        })
       
-      updateReviews([...reviews, createNewReview]);
-      setNewTopic({name: "", exercises: ""});
+      setNewReview({title: "", description: ""});
       console.log("Add review");
     }
   };
