@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Review from "./Review";
 
 function Reviews({ reviews, isLoading }) {
+  useEffect(() => {
+    console.log("Reviews", reviews);
+  }, [reviews]);
   return (
     <div>
       <h1>Reviews: </h1>

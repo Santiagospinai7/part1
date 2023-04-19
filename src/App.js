@@ -67,18 +67,17 @@ function App({ courseData }) {
       return;
     } else {
       const createNewReview = {
-        user_id: 1,
+        userId: 1,
         title: newReview.title,
         body: newReview.description
       }
 
       createReview(createNewReview)
-        .then(review => {
-          updateReviews([...reviews, review]);
-        })
-      
+        .then((data) => {
+          updateReviews([...reviews, data]);
+      })
+
       setNewReview({title: "", description: ""});
-      console.log("Add review");
     }
   };
 
