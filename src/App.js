@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import Content from './Content';
 import Header from './Header';
 import Total from './Total'; 
@@ -12,7 +14,8 @@ function App({ courseData }) {
   const [course, updateCourse] = useState(courseData);
   const [newTopic, setNewTopic] = useState({name: "", exercises: ""});
   const [exerciseTotal, setExerciseTotal] = useState(calculateExerciseTotal);
-  const [reviews, setReviews] = useState([]);
+  const [reviews, updateReviews] = useState([]);
+  const [newReview, setNewReview] = useState({title: "", description: ""});
   const [isLoading, setLoading] = useState(true);
 
   // Fetch data
@@ -20,13 +23,14 @@ function App({ courseData }) {
     setLoading(true);
     
     setTimeout(() => {
-      fetch("https://jsonplaceholder.typicode.com/posts")
-        .then(response => response.json())
-        .then(data => {
-          setReviews(data);
+      axios.get("https://jsonplaceholder.typicode.com/posts")
+        .then(response => {
+          // recover data from response
+          const { data } = response;
+          updateReviews(data);
           setLoading(false);
         })
-    }, 2000);
+    }, 1000);
   }, []);
 
   // Use Effect
@@ -35,9 +39,8 @@ function App({ courseData }) {
     setExerciseTotal(calculateExerciseTotal());
   }, [course]);
 
-
   // Functions
-  const handleSubmit = (e) => {
+  const handleTopicSubmit = (e) => {
     e.preventDefault();
 
     if (newTopic.length === 0 || newTopic.name === "" || newTopic.exercises === 0 || newTopic.exercises === undefined) {
@@ -53,7 +56,26 @@ function App({ courseData }) {
       updateCourse({...course, parts: [...course.parts, createNewTopic]});
       setNewTopic({name: "", exercises: ""});
     }
-  }
+  };
+
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    if (newReview.length === 0 || newReview.title === "" || newReview.description === "") {
+      console.log("No new Review");
+      return;
+    } else {
+      const createNewReview = {
+        user_id: 1,
+        id: reviews.length + 1,
+        title: newReview.title,
+        body: newReview.description
+      }
+      
+      updateReviews([...reviews, createNewReview]);
+      setNewTopic({name: "", exercises: ""});
+      console.log("Add review");
+    }
+  };
 
   const handleChange = (e) => {
     if (e.target.value !== undefined) {
@@ -62,10 +84,15 @@ function App({ courseData }) {
       } else if (!isNaN(parseInt(e.target.value, 10))) {
         setNewTopic({...newTopic, exercises: parseInt(e.target.value, 10)})
       }
+      if (e.target.id === 'reviewTitle') {
+        setNewReview({...newReview, title: e.target.value})
+      } else if (e.target.id === 'reviewDescription') {
+        setNewReview({...newReview, description: e.target.value})
+      }
     } else {
       console.log("No value");
     }
-  }
+  };
 
   return (
     <div>
@@ -73,7 +100,9 @@ function App({ courseData }) {
       <Content parts={course.parts}/>
       <Total exerciseTotal={ exerciseTotal }/>
 
-      <form onSubmit={handleSubmit}>
+      <br />
+      <h2>Add a new Topic</h2>
+      <form onSubmit={handleTopicSubmit}>
         <div>
           <label htmlFor='name'>Name:</label><br />
           <input id='name' type="text" value={newTopic.name} placeholder='Name' onChange={handleChange}/>
@@ -86,7 +115,22 @@ function App({ courseData }) {
         <button>Add topic</button>
       </form>
 
+      <br />
       <Reviews reviews={reviews} isLoading={isLoading}/>
+
+      <h2>Add a Review</h2>
+      <form onSubmit={handleReviewSubmit}>
+        <div>
+          <label htmlFor='reviewTitle'>Title:</label><br />
+          <input id='reviewTitle' type="text" value={newReview.title} placeholder='Title' onChange={handleChange}/>
+        </div>
+        <div>
+          <label htmlFor='reviewDescription'>Description:</label><br />
+          <input id='reviewDescription' type="text" value={newReview.description} placeholder='Type a description' onChange={handleChange}/>
+        </div>
+        <br />
+        <button>Add Review</button>
+      </form>
     </div>
   );
 }
