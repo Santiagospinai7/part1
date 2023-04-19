@@ -13,14 +13,20 @@ function App({ courseData }) {
   const [newTopic, setNewTopic] = useState({name: "", exercises: ""});
   const [exerciseTotal, setExerciseTotal] = useState(calculateExerciseTotal);
   const [reviews, setReviews] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   // Fetch data
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then(response => response.json())
-      .then(data => {
-        setReviews(data);
-      })
+    setLoading(true);
+    
+    setTimeout(() => {
+      fetch("https://jsonplaceholder.typicode.com/posts")
+        .then(response => response.json())
+        .then(data => {
+          setReviews(data);
+          setLoading(false);
+        })
+    }, 2000);
   }, []);
 
   // Use Effect
@@ -80,7 +86,7 @@ function App({ courseData }) {
         <button>Add topic</button>
       </form>
 
-      <Reviews reviews={reviews}/>
+      <Reviews reviews={reviews} isLoading={isLoading}/>
     </div>
   );
 }
