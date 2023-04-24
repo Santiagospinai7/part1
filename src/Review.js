@@ -4,8 +4,9 @@ function Review({ review }) {
   return (
     <div>
       <li>
-        <h3>{review.title}</h3>
-        <p>{review.body}</p>
+        <p>title: {review.title}</p>
+        <p>content: {review.content}</p>
+        <p>important: {(review.important) ? 'true' : 'false'}</p>
       </li>
       <br />
     </div>

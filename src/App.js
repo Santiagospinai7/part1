@@ -27,10 +27,6 @@ function App({ courseData }) {
     setLoading(true);
     
     setTimeout(() => {
-      // getAllReviews().then(reviews => {
-      //   updateReviews(reviews);
-      //   setLoading(false);
-      // })
       getAll().then(reviews => {
         updateReviews(reviews);
         setLoading(false);
@@ -70,15 +66,14 @@ function App({ courseData }) {
       return;
     } else {
       const createNewReview = {
-        userId: 1,
         title: newReview.title,
-        body: newReview.description
+        content: newReview.description
       }
 
-      // createReview(createNewReview)
-      //   .then((data) => {
-      //     updateReviews((prevReviews) => [...prevReviews, data]);
-      // })
+      create(createNewReview)
+        .then((data) => {
+          updateReviews((prevReviews) => [...prevReviews, data]);
+        })
 
       setNewReview({title: "", description: ""});
     }

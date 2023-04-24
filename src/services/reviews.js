@@ -3,16 +3,11 @@ const BASE_URL = "http://localhost:3001/api/notes/";
 
 export const getAll = () => {
   const request = axios.get(BASE_URL);
-  const nonExisting = {
-    id: 10000,
-    content: 'This note is not saved to server',
-    date: '2019-05-30T17:30:31.098Z',
-    important: true,
-  };
-  return request.then(response => response.data.concat(nonExisting));
+  return request.then(response => response.data);
 };
 
 export const create = newObject => {
+  console.log("newObject", newObject);
   const request = axios.post(BASE_URL, newObject);
   return request.then(response => response.data);
 };
