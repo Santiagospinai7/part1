@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Review from "./Review";
 
 function Reviews({ reviews, isLoading }) {

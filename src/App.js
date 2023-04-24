@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
 import Content from './Content';
 import Header from './Header';
 import Total from './Total'; 
 import Reviews from './Reviews';
-import { type } from '@testing-library/user-event/dist/type';
 
-import { createReview } from './services/reviews/createReview';
-import  { getAllReviews } from './services/reviews/getAllReviews';
+// import { createReview } from './services/reviews/createReview';
+import { getAll, create, update } from './services/reviews.js';
+
 
 function App({ courseData }) {
   const calculateExerciseTotal = () => course.parts.reduce((counter, part) => counter + part.exercises, 0)
@@ -28,7 +27,11 @@ function App({ courseData }) {
     setLoading(true);
     
     setTimeout(() => {
-      getAllReviews().then(reviews => {
+      // getAllReviews().then(reviews => {
+      //   updateReviews(reviews);
+      //   setLoading(false);
+      // })
+      getAll().then(reviews => {
         updateReviews(reviews);
         setLoading(false);
       })
@@ -72,10 +75,10 @@ function App({ courseData }) {
         body: newReview.description
       }
 
-      createReview(createNewReview)
-        .then((data) => {
-          updateReviews([...reviews, data]);
-      })
+      // createReview(createNewReview)
+      //   .then((data) => {
+      //     updateReviews((prevReviews) => [...prevReviews, data]);
+      // })
 
       setNewReview({title: "", description: ""});
     }
