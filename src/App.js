@@ -7,6 +7,7 @@ import Reviews from './Reviews';
 
 // import { createReview } from './services/reviews/createReview';
 import { getAll, create, update } from './services/reviews.js';
+import { login } from './services/login';
 
 
 function App({ courseData }) {
@@ -21,6 +22,11 @@ function App({ courseData }) {
   const [newReview, setNewReview] = useState({title: "", description: ""});
   
   const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
 
   // Fetch data
   useEffect(() => {
@@ -96,9 +102,29 @@ function App({ courseData }) {
     }
   };
 
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const user = await login({ username, password });
+
+      console.log(user)
+
+      setUser(user);
+      setUsername('');
+      setPassword('');
+    } catch (error) {
+      setError('Wrong credentials');
+      setTimeout(() => {
+        setError(null)
+      }
+      , 5000);
+    }
+  }
+
   return (
     <div>
-      <Header course={course.name}/>
+      {/* <Header course={course.name}/>
       <Content parts={course.parts}/>
       <Total exerciseTotal={ exerciseTotal }/>
 
@@ -115,12 +141,35 @@ function App({ courseData }) {
         </div>
         <br />
         <button>Add topic</button>
+      </form> */}
+
+      {/* <br /> */}
+      <h2>Login</h2>
+
+      <p>Error: {error}</p>
+
+      <form onSubmit={handleLoginSubmit}>
+        <input
+          type="text"
+          value={username}
+          name="Username"
+          placeholder="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+        <input
+          type="password"
+          value={password}
+          name="Password"
+          placeholder="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
+        <button>Login</button>
       </form>
 
-      <br />
       <Reviews reviews={reviews} isLoading={isLoading}/>
 
       <h2>Add a Review</h2>
+
       <form onSubmit={handleReviewSubmit}>
         <div>
           <label htmlFor='reviewTitle'>Title:</label><br />
