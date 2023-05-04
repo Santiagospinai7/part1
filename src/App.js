@@ -5,10 +5,12 @@ import { useState, useEffect } from 'react';
 // import Total from './Total'; 
 import Reviews from './Reviews';
 import LoginForm from './Components/LoginFrom';
+import CreateReviewForm from './Components/CreateReviewForm';
 
 // import { createReview } from './services/reviews/createReview';
 import { getAll, create } from './services/reviews.js';
 import { login } from './services/login';
+
 
 
 function App({ courseData }) {
@@ -40,12 +42,6 @@ function App({ courseData }) {
       })
     }, 1000);
   }, []);
-
-  // Use Effect
-  // useEffect(() => {
-  //   console.log("rendering again")
-  //   setExerciseTotal(calculateExerciseTotal());
-  // }, [course]);
 
   // Functions
   // const handleTopicSubmit = (e) => {
@@ -87,6 +83,7 @@ function App({ courseData }) {
   };
 
   const handleChange = (e) => {
+    console.log(e.target.value)
     if (e.target.value !== undefined) {
       if (e.target.id === 'name') {
         setNewTopic({...newTopic, name: e.target.value})
@@ -154,9 +151,10 @@ function App({ courseData }) {
 
       <Reviews reviews={reviews} isLoading={isLoading}/>
 
-      <h2>Add a Review</h2>
+      <p>review Title: {newReview.title}</p>
+      <p>review Description: {newReview.description}</p>
 
-      <form onSubmit={handleReviewSubmit}>
+      {/* <form onSubmit={handleReviewSubmit}>
         <div>
           <label htmlFor='reviewTitle'>Title:</label><br />
           <input id='reviewTitle' type="text" value={newReview.title} placeholder='Title' onChange={handleChange}/>
@@ -167,7 +165,8 @@ function App({ courseData }) {
         </div>
         <br />
         <button>Add Review</button>
-      </form>
+      </form> */}
+      <CreateReviewForm handleReviewSubmit={handleReviewSubmit} handleChange={handleChange} reviewTitle={newReview.title} reviewDescription={newReview.description}/>
     </div>
   );
 }
