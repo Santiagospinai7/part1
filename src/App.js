@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react';
 
-import Content from './Content';
-import Header from './Header';
-import Total from './Total'; 
+// import Content from './Content';
+// import Header from './Header';
+// import Total from './Total'; 
 import Reviews from './Reviews';
+import LoginForm from './Components/LoginFrom';
 
 // import { createReview } from './services/reviews/createReview';
-import { getAll, create, update } from './services/reviews.js';
+import { getAll, create } from './services/reviews.js';
 import { login } from './services/login';
 
 
 function App({ courseData }) {
-  const calculateExerciseTotal = () => course.parts.reduce((counter, part) => counter + part.exercises, 0)
+  // const calculateExerciseTotal = () => course.parts.reduce((counter, part) => counter + part.exercises, 0)
 
   // States
-  const [course, updateCourse] = useState(courseData);
+  // const [course, updateCourse] = useState(courseData);
   const [newTopic, setNewTopic] = useState({name: "", exercises: ""});
-  const [exerciseTotal, setExerciseTotal] = useState(calculateExerciseTotal);
+  // const [exerciseTotal, setExerciseTotal] = useState(calculateExerciseTotal);
 
   const [reviews, updateReviews] = useState([]);
   const [newReview, setNewReview] = useState({title: "", description: ""});
@@ -41,29 +42,29 @@ function App({ courseData }) {
   }, []);
 
   // Use Effect
-  useEffect(() => {
-    console.log("rendering again")
-    setExerciseTotal(calculateExerciseTotal());
-  }, [course]);
+  // useEffect(() => {
+  //   console.log("rendering again")
+  //   setExerciseTotal(calculateExerciseTotal());
+  // }, [course]);
 
   // Functions
-  const handleTopicSubmit = (e) => {
-    e.preventDefault();
+  // const handleTopicSubmit = (e) => {
+  //   e.preventDefault();
 
-    if (newTopic.length === 0 || newTopic.name === "" || newTopic.exercises === 0 || newTopic.exercises === undefined) {
-      console.log("No new topic");
-      return;
-    } else {
-      const createNewTopic = {
-        id: course.parts.length + 1,
-        name: newTopic.name,
-        exercises: newTopic.exercises
-      }
+  //   if (newTopic.length === 0 || newTopic.name === "" || newTopic.exercises === 0 || newTopic.exercises === undefined) {
+  //     console.log("No new topic");
+  //     return;
+  //   } else {
+  //     const createNewTopic = {
+  //       id: course.parts.length + 1,
+  //       name: newTopic.name,
+  //       exercises: newTopic.exercises
+  //     }
       
-      updateCourse({...course, parts: [...course.parts, createNewTopic]});
-      setNewTopic({name: "", exercises: ""});
-    }
-  };
+  //     updateCourse({...course, parts: [...course.parts, createNewTopic]});
+  //     setNewTopic({name: "", exercises: ""});
+  //   }
+  // };
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
@@ -105,6 +106,8 @@ function App({ courseData }) {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
+    console.log('login submit')
+
     try {
       const user = await login({ username, password });
 
@@ -144,27 +147,10 @@ function App({ courseData }) {
       </form> */}
 
       {/* <br /> */}
-      <h2>Login</h2>
 
       <p>Error: {error}</p>
 
-      <form onSubmit={handleLoginSubmit}>
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          placeholder="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          placeholder="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-        <button>Login</button>
-      </form>
+      <LoginForm handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[username, setUsername, password, setPassword]}/>
 
       <Reviews reviews={reviews} isLoading={isLoading}/>
 
