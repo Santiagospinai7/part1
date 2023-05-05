@@ -1,5 +1,5 @@
 const CreateReviewFrom = ({handleReviewSubmit, handleChangeReview}) => {
-  const [setNewReview, newReview] = handleChangeReview;
+  const [newReview, setNewReview] = handleChangeReview
 
   return (
     <div>
@@ -12,7 +12,7 @@ const CreateReviewFrom = ({handleReviewSubmit, handleChangeReview}) => {
             type="text" 
             value={newReview.title} 
             placeholder='Title'
-            onChange={({ target }) => setNewReview({...newReview, title: target.value})}/>
+            onChange={({ target }) => setNewReview({ ...newReview, title: target.value })}/>
         </div>
         <div>
           <label htmlFor='reviewDescription'>Description:</label><br />
@@ -20,7 +20,7 @@ const CreateReviewFrom = ({handleReviewSubmit, handleChangeReview}) => {
             type="text" 
             value={newReview.description} 
             placeholder='Type a description' 
-            onChange={({ target }) => setNewReview({...newReview, description: target.value})}/>
+            onChange={({ target }) => setNewReview({ ...newReview, description: target.value })}/>
         </div>
         <br />
         <button>Add Review</button>
