@@ -4,7 +4,7 @@ import Reviews from './Reviews';
 import LoginForm from './Components/LoginFrom';
 import CreateReviewForm from './Components/CreateReviewForm';
 
-import { getAll, create } from './services/reviews.js';
+import { getAllReviews, createReview } from './services/reviews.js';
 import { login } from './services/login';
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
     setLoading(true);
     
     setTimeout(() => {
-      getAll().then(reviews => {
+      getAllReviews().then(reviews => {
         updateReviews(reviews);
         setLoading(false);
       })
@@ -42,7 +42,7 @@ function App() {
         content: newReview.description
       }
 
-      create(createNewReview)
+      createReview(createNewReview, {token: user.token})
         .then((data) => {
           updateReviews((prevReviews) => [...prevReviews, data]);
         })
@@ -75,17 +75,15 @@ function App() {
 
   return (
     <div>
-
       <p>Error: {error}</p>
 
-      <LoginForm handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[username, setUsername, password, setPassword]}/>
+      {user ? <p>{user.name} logged-in</p> : <p>Not logged in</p>}
+      {user === null 
+        ? <LoginForm handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[username, setUsername, password, setPassword]}/> 
+        : <CreateReviewForm handleReviewSubmit={handleReviewSubmit} handleChangeReview={[newReview, setNewReview]}/> 
+      }
 
       <Reviews reviews={reviews} isLoading={isLoading}/>
-
-      <p>review Title: {newReview.title}</p>
-      <p>review Description: {newReview.description}</p>
-
-      <CreateReviewForm handleReviewSubmit={handleReviewSubmit} handleChangeReview={[newReview, setNewReview]}/>
     </div>
   );
 }
