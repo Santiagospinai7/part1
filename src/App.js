@@ -7,9 +7,7 @@ import CreateReviewForm from './Components/CreateReviewForm';
 import { getAll, create } from './services/reviews.js';
 import { login } from './services/login';
 
-
-
-function App({ courseData }) {
+function App() {
   // States
   const [reviews, updateReviews] = useState([]);
   const [newReview, setNewReview] = useState({title: "", description: ""});
