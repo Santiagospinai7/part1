@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
-import Reviews from './Reviews';
-import LoginForm from './Components/LoginFrom';
-import CreateReviewForm from './Components/CreateReviewForm';
+import Reviews from './Reviews'
+import LoginForm from './Components/LoginFrom'
+import CreateReviewForm from './Components/CreateReviewForm'
 
-import { getAllReviews, createReview } from './services/reviews.js';
-import { login } from './services/login';
+import { getAllReviews, createReview, setToken } from './services/reviews.js'
+import { login } from './services/login'
 
 function App() {
   // States
-  const [reviews, updateReviews] = useState([]);
-  const [newReview, setNewReview] = useState({title: "", description: ""});
+  const [reviews, updateReviews] = useState([])
+  const [newReview, setNewReview] = useState({title: "", description: ""})
   
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
   // Fetch data
   useEffect(() => {
@@ -29,7 +29,22 @@ function App() {
         setLoading(false);
       })
     }, 1000);
-  }, []);
+  }, [])
+
+  // Read Local Storage
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedReviewAppUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      setToken(user.token)
+    }
+  }, [])
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedReviewAppUser')
+    setUser(null)
+  }
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
@@ -42,14 +57,14 @@ function App() {
         content: newReview.description
       }
 
-      createReview(createNewReview, {token: user.token})
+      createReview(createNewReview)
         .then((data) => {
           updateReviews((prevReviews) => [...prevReviews, data]);
         })
 
       setNewReview({title: "", description: ""});
     }
-  };
+  }
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +74,11 @@ function App() {
     try {
       const user = await login({ username, password });
 
-      console.log(user)
+      window.localStorage.setItem(
+        'loggedReviewAppUser', JSON.stringify(user)
+      );
+      
+      setToken(user.token);
 
       setUser(user);
       setUsername('');
@@ -82,10 +101,11 @@ function App() {
         ? <LoginForm handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[username, setUsername, password, setPassword]}/> 
         : <CreateReviewForm handleReviewSubmit={handleReviewSubmit} handleChangeReview={[newReview, setNewReview]}/> 
       }
+      <button onClick={handleLogout}>Logout</button>
 
       <Reviews reviews={reviews} isLoading={isLoading}/>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
