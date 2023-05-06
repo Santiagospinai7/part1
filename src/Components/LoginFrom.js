@@ -12,7 +12,6 @@ const LoginForm = ({ handleLoginSubmit, handleChangeUserName}) => {
 
   return (
     <div>
-
       <div style={hideWhenVisible}>
         <button onClick={() => setLoginVisible(true)}>Show Login</button>
       </div>
