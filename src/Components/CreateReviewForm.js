@@ -1,12 +1,8 @@
 import { useState } from 'react';
 
-const CreateReviewFrom = ({handleReviewSubmit, handleChangeReview}) => {
+const CreateReviewFrom = ({ addReview }) => {
   // const [newReview, setNewReview] = handleChangeReview
   const [newReview, setNewReview] = useState({title: "", description: ""})
-
-  const handleReview = (e) => {
-    setNewReview({ ...newReview, [e.target.id]: e.target.value })
-  }
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
@@ -15,6 +11,10 @@ const CreateReviewFrom = ({handleReviewSubmit, handleChangeReview}) => {
       title: newReview.title,
       content: newReview.description
     }
+
+    addReview(createNewReview)
+
+    setNewReview({title: "", description: ""})
   }
 
   return (

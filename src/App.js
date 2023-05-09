@@ -10,7 +10,6 @@ import { login } from './services/login'
 function App() {
   // States
   const [reviews, updateReviews] = useState([])
-  const [newReview, setNewReview] = useState({title: "", description: ""})
   
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -46,24 +45,12 @@ function App() {
     setUser(null)
   }
 
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
-    if (newReview.length === 0 || newReview.title === "" || newReview.description === "") {
-      console.log("No new Review");
-      return;
-    } else {
-      const createNewReview = {
-        title: newReview.title,
-        content: newReview.description
-      }
-
-      createReview(createNewReview)
-        .then((data) => {
-          updateReviews((prevReviews) => [...prevReviews, data]);
-        })
-
-      setNewReview({title: "", description: ""});
-    }
+  const addReview = (reviewObject) => {
+    createReview(reviewObject)
+      .then((returnedReview) => {
+        // setNewReview(reviews.concat(returnedReview));
+        updateReviews((prevReviews) => [...prevReviews, returnedReview]);
+      });
   }
 
   const handleLoginSubmit = async (e) => {
@@ -99,7 +86,7 @@ function App() {
       {user ? <p>{user.name} logged-in</p> : <p>Not logged in</p>}
       {user === null 
         ? <LoginForm handleLoginSubmit={handleLoginSubmit} handleChangeUserName={[username, setUsername, password, setPassword]}/> 
-        : <CreateReviewForm handleReviewSubmit={handleReviewSubmit} handleChangeReview={[newReview, setNewReview]}/> 
+        : <CreateReviewForm addReview={addReview} /> 
       }
       <button onClick={handleLogout}>Logout</button>
 
